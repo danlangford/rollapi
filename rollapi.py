@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    return 'an api around the "dice" python lib thrown together real quick by @danlangford'
 
 
 @app.route('/api/v1/roll/<roll_cmd>')
