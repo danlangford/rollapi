@@ -2,8 +2,7 @@ import logging
 import dice
 from flask import Flask
 from flask import request
-from flask import json
-from flask import Response
+from flask import jsonify
 
 
 app = Flask(__name__)
@@ -21,11 +20,10 @@ def get_roll(roll_cmd):
 @app.route('/api/v1/hipchat', methods=['POST'])
 def hipchat():
     log = app.logger
-    log.debug( 'hi' )
-    log.debug(request.get_json())
-
-    log.debug(request.json)
-    return request.json['item']['message']['message']
+    body = request.get_json()
+    command = body['item']['message']['message'].replace('/roll ','')
+    resp = {'color':'black','message':get_roll(command),'notify':False,'message_format':'text'}
+    return jsonify(resp)
 
 
 if __name__ == '__main__':
