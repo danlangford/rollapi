@@ -33,7 +33,7 @@ def hipchat():
     other_msg=''
     try:
         # partition #1 removes the command (/roll) and partition #2 isolates the roll syntax from any other message
-        roll_syntax, _d, other_msg = slash_command.partition(' ')[3].partition(' ')
+        roll_syntax, _d, other_msg = slash_command.partition(' ')[2].partition(' ')
 
         if roll_syntax.lower() == 'help':
             color='blue'
