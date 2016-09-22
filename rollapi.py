@@ -27,23 +27,27 @@ def hipchat():
 
     body = request.get_json()
     from_name = body['item']['message']['from']['mention_name']
-    slash_command = body['item']['message']['message']
+    slash_command = body['item']['message']['message'].strip()
 
-    color='black'
+    color='yellow'
     other_msg=''
     try:
         # partition #1 removes the command (/roll) and partition #2 isolates the roll syntax from any other message
         roll_syntax, _d, other_msg = slash_command.partition(' ')[2].partition(' ')
 
-        if roll_syntax.lower() == 'help':
-            color='blue'
-            roll="try things like d6 2d8 1d20+3 4d6^3 2d20v1 5d6s 4d10t where s=sort t=total ^=top_values v=bottom_values"
+        if roll_syntax.lower().strip() in ['help','']:
+            color='orange'
+            roll='try things like d6 2d8 1d20+3 4d6^3 2d20v1 5d6s 4d10t'
+            other_msg='where s=sort t=total ^=top_values v=bottom_values'
         else:
             roll = _get_roll(roll_syntax)
-    except Exception as be:
+    except Exception as e:
+        app.logger.error(e)
         color='red'
-        roll = 'Exception: {}'.format(be.message)
+        roll = 'Exception: {}'.format(e)
 
+    if len(roll) == 1:
+        roll = roll[0]
     if isinstance(roll, (list,tuple)) and not isinstance(roll, basestring):
         roll_msg = '{} (Σ={})'.format(roll, sum(roll))
     else:
