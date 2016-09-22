@@ -36,7 +36,7 @@ def hipchat():
         roll_syntax, _d, other_msg = slash_command.partition(' ')[2].partition(' ')
 
         if roll_syntax.lower().strip() in ['help','']:
-            color='orange'
+            color='gray'
             roll='try things like d6 2d8 1d20+3 4d6^3 2d20v1 5d6s 4d10t'
             other_msg='where s=sort t=total ^=top_values v=bottom_values'
         else:
