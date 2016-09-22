@@ -24,23 +24,29 @@ def get_roll(roll_cmd):
 
 @app.route('/api/v1/hipchat', methods=['POST'])
 def hipchat():
+
     body = request.get_json()
     from_name = body['item']['message']['from']['mention_name']
-    roll_syntax, _d, other_msg = body['item']['message']['message'].replace('/roll ','').partition(' ')
+    slash_command = body['item']['message']['message']
 
-    roll = _get_roll(roll_syntax)
+    try:
+        # partition #1 removes the command (/roll) and partition #2 isolates the roll syntax from any other message
+        roll_syntax, _d, other_msg = slash_command.partition(' ')[3].partition(' ')
+
+        if roll_syntax.lower() == 'help':
+            roll="try things like d6 2d8 1d20+3 4d6^3 2d20v1 5d6s 4d10t where s=sort t=total ^=top_values v=bottom_values"
+        else:
+            roll = _get_roll(roll_syntax)
+    except Exception as be:
+        roll = 'Exception: {}'.format(be.message)
+
 
     if isinstance(roll, (list,tuple)) and not isinstance(roll, basestring):
         roll_msg = '{} (Σ={})'.format(roll, sum(roll))
     else:
         roll_msg = str(roll)
 
-    if len(other_msg)>0:
-        fluff = 'says "{}" with'.format(other_msg)
-    else:
-        fluff = 'rolling {} gets'.format(roll_syntax)
-
-    message = '@{} {} {}'.format(from_name, fluff, roll_msg)
+    message = '@{} {} {}'.format(from_name, roll_msg, other_msg)
 
     return jsonify({'color':'black','message':message,'notify':False,'message_format':'text'})
 
