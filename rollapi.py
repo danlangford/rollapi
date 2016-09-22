@@ -29,17 +29,19 @@ def hipchat():
     from_name = body['item']['message']['from']['mention_name']
     slash_command = body['item']['message']['message']
 
+    color='black'
     try:
         # partition #1 removes the command (/roll) and partition #2 isolates the roll syntax from any other message
         roll_syntax, _d, other_msg = slash_command.partition(' ')[3].partition(' ')
 
         if roll_syntax.lower() == 'help':
+            color='blue'
             roll="try things like d6 2d8 1d20+3 4d6^3 2d20v1 5d6s 4d10t where s=sort t=total ^=top_values v=bottom_values"
         else:
             roll = _get_roll(roll_syntax)
     except Exception as be:
+        color='red'
         roll = 'Exception: {}'.format(be.message)
-
 
     if isinstance(roll, (list,tuple)) and not isinstance(roll, basestring):
         roll_msg = '{} (Σ={})'.format(roll, sum(roll))
@@ -48,7 +50,7 @@ def hipchat():
 
     message = '@{} {} {}'.format(from_name, roll_msg, other_msg)
 
-    return jsonify({'color':'black','message':message,'notify':False,'message_format':'text'})
+    return jsonify({'color':color,'message':message,'notify':False,'message_format':'text'})
 
 
 if __name__ == '__main__':
