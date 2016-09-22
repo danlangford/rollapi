@@ -1,4 +1,4 @@
-import logging
+# coding=utf-8
 import dice
 from flask import Flask
 from flask import request
@@ -7,8 +7,10 @@ from flask import jsonify
 
 app = Flask(__name__)
 
+
 def _get_roll(roll_cmd):
     return dice.roll(roll_cmd)
+
 
 @app.route('/')
 def hello_world():
@@ -18,6 +20,7 @@ def hello_world():
 @app.route('/api/v1/roll/<roll_cmd>')
 def get_roll(roll_cmd):
     return str(_get_roll(roll_cmd))
+
 
 @app.route('/api/v1/hipchat', methods=['POST'])
 def hipchat():
