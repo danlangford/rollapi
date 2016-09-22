@@ -49,7 +49,8 @@ def hipchat():
     if isinstance(roll, (list,tuple)) and not isinstance(roll, basestring):
         if len(roll) == 1:
             roll_msg = str(roll)
-        roll_msg = '{} (Σ={})'.format(roll, sum(roll))
+        else:
+            roll_msg = '{} (Σ={})'.format(roll, sum(roll))
     else:
         roll_msg = str(roll)
 
