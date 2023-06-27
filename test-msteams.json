@@ -1,0 +1,28 @@
+{
+  "channelId": "webchat",
+  "from": {
+    "id": "HiZIXKbokfr",
+    "name":"You"
+  },
+  "type": "message",
+  "membersAdded": [
+    {
+      "name": "Roll",
+      "id": "RollDiceAPI@PdIZoguz88"
+    }
+  ],
+  "serviceUrl": "https://webchat.botframework.com/",
+  "timestamp": "2019-04-18T17:39:56.3681122Z",
+  "conversation": {
+    "id": "4sqk1fZGJYwLSn7rr25cnP-5"
+  },
+  "channelData": {"clientActivityId": "1555619474696.9543602644652851.0"},
+  "id": "GPCPiOvLKRN",
+  "recipient": {
+    "name": "Roll",
+    "id": "RollDiceAPI@PdIZoguz88"
+  },
+  "text": "1d20",
+  "textFormat": "plain",
+  "locale": "en"
+}

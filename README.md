@@ -1,5 +1,8 @@
 deployed to heroku
 
+https://rollapi.herokuapp.com/api/v1/roll/<roll_cmd>
+
+where roll_cmd is passed into the [`dice`](https://github.com/borntyping/python-dice) lib
 
 ---------------
 
