@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  rollapi
+
+  Sample SAM Template for rollapi
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+    MemorySize: 128
+
+Resources:
+  rollapifn:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: rollapifn/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      Architectures:
+        - arm64
+      Events:
+        Base:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /
+            Method: get
+        Roll:
+          Type: Api
+          Properties:
+            Path: /api/v1/roll/{roll_cmd}
+            Method: get
+        MSTeams:
+          Type: Api
+          Properties:
+            Path: /api/v1/msteams
+            Method: post
+        HipChat:
+          Type: Api
+          Properties:
+            Path: /api/v1/hipchat
+            Method: post
+  rollapifnLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Join [ '/', [ '/aws/lambda', !Ref rollapifn ] ]
+      RetentionInDays: 30
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  rollapiGateway:
+    Description: "API Gateway endpoint URL for Prod stage for rollapi function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+  rollapifn:
+    Description: "roll api lambda function ARN"
+    Value: !GetAtt rollapifn.Arn
+  rollapifnIamRole:
+    Description: "Implicit IAM Role created for roll api function"
+    Value: !GetAtt rollapifnRole.Arn

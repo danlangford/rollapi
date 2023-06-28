@@ -1,0 +1,4 @@
+dice
+beautifulsoup4
+#requests
+#boto3

@@ -1,5 +1,0 @@
-dice
-flask
-gunicorn
-gevent
-requests
